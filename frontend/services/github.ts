@@ -41,7 +41,6 @@ export interface Repository {
   is_template: boolean;
   topics: string[];
   open_issues: number;
-  score: number;
 }
 
 export interface GithubRepositoryResponse {
@@ -78,8 +77,6 @@ export const getRepositories = async () => {
   );
   const repositoryMetadata =
     (await response.json()) as GithubRepositoryResponse;
-
-  console.log(repositoryMetadata);
 
   return repositoryMetadata;
 };
