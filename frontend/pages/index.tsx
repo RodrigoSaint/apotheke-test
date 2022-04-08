@@ -2,105 +2,15 @@ import Head from "next/head";
 import type { NextPage } from "next";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { GoRepo, GoRepoForked } from "react-icons/go";
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
 import styles from "../styles/Home.module.css";
+import RepositoryList from "../components/repository-list";
 import { getRepositories, Repository } from "../services/github";
-
-const Card = styled.article`
-  padding: 1rem;
-  border-radius: 0.5rem;
-  transition: background-color 0.25s;
-  position: relative;
-  :hover {
-    background-color: #dddddd;
-  }
-`;
-
-const Title = styled.a`
-  font-size: 1.2rem;
-  font-weight: bold;
-`;
-
-const Description = styled.p`
-  font-size: 0.9rem;
-  color: gray;
-  margin: 0.5rem 0 0.75rem 0;
-`;
-
-const List = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
 
 const Main = styled.main`
   margin: 0 auto;
   width: 80vw;
 `;
-
-const InfoList = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-interface RepositoryStarProps {
-  repositoryId: number;
-}
-
-const RepositoryStarContainer = styled.div`
-  padding: 0.5rem;
-  cursor: pointer;
-  position: absolute;
-  top: 0;
-  right: 0;
-`;
-
-const RepositoryStar = ({ repositoryId }: RepositoryStarProps) => {
-  const [isStared, setStar] = useState(localStorage[repositoryId] === "true");
-  const IconSize = 22;
-
-  const onToggle = () => {
-    localStorage[repositoryId] = !isStared;
-    setStar(!isStared);
-  };
-
-  return (
-    <RepositoryStarContainer onClick={onToggle}>
-      {isStared ? (
-        <AiFillStar size={IconSize} />
-      ) : (
-        <AiOutlineStar size={IconSize} />
-      )}
-    </RepositoryStarContainer>
-  );
-};
-
-interface RepositoryDisplayProps {
-  repository: Repository;
-}
-
-const RepositoryDisplay = ({ repository }: RepositoryDisplayProps) => {
-  return (
-    <Card>
-      <Title href={repository.html_url} target="_blank">
-        <GoRepo /> {repository.name}
-      </Title>
-      <Description>{repository.description}</Description>
-      <InfoList>
-        <span>{repository.language}</span>
-        <span>
-          <AiFillStar /> {repository.stargazers_count}
-        </span>
-        <span>
-          <GoRepoForked /> {repository.forks_count}
-        </span>
-      </InfoList>
-      <RepositoryStar repositoryId={repository.id} />
-    </Card>
-  );
-};
 
 const Home: NextPage = () => {
   const [repositories, setRepositories] = useState<Repository[]>([]);
@@ -122,11 +32,7 @@ const Home: NextPage = () => {
       <Main className={styles.main}>
         <h1 className={styles.title}>Github Trending Repositories</h1>
 
-        <List>
-          {repositories.map((repository) => (
-            <RepositoryDisplay key={repository.id} repository={repository} />
-          ))}
-        </List>
+        <RepositoryList />
       </Main>
     </div>
   );
