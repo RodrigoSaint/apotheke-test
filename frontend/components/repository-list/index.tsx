@@ -1,9 +1,8 @@
-import type { NextPage } from "next";
+import useSWR from "swr";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 
 import RepositoryDisplay from "../repository-display";
-import { getRepositories, Repository } from "../../services/github";
+import { getRepositories } from "../../services/github";
 
 const List = styled.div`
   display: flex;
@@ -12,14 +11,12 @@ const List = styled.div`
 `;
 
 export default function RepositoryList() {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const { data, error } = useSWR("/github/repositories", getRepositories);
 
-  useEffect(() => {
-    getRepositories().then(({ items, total_count }) => {
-      setRepositories(items);
-    });
-  }, []);
+  if (!data) return <span>Loading...</span>;
+  if (error || !data.items) return <span>Error fetching repositories</span>;
 
+  const { items: repositories } = data;
   return (
     <List>
       {repositories.map((repository) => (

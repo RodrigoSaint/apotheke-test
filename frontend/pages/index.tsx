@@ -1,11 +1,9 @@
 import Head from "next/head";
 import type { NextPage } from "next";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
 
 import styles from "../styles/Home.module.css";
 import RepositoryList from "../components/repository-list";
-import { getRepositories, Repository } from "../services/github";
 
 const Main = styled.main`
   margin: 0 auto;
@@ -13,14 +11,6 @@ const Main = styled.main`
 `;
 
 const Home: NextPage = () => {
-  const [repositories, setRepositories] = useState<Repository[]>([]);
-
-  useEffect(() => {
-    getRepositories().then(({ items, total_count }) => {
-      setRepositories(items);
-    });
-  }, []);
-
   return (
     <div className={styles.container}>
       <Head>
