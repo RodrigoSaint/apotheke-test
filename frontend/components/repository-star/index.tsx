@@ -26,9 +26,9 @@ export default function RepositoryStar({ repositoryId }: RepositoryStarProps) {
   return (
     <RepositoryStarContainer onClick={onToggle}>
       {isStared ? (
-        <AiFillStar size={IconSize} />
+        <AiFillStar data-testid="with-star" size={IconSize} />
       ) : (
-        <AiOutlineStar size={IconSize} />
+        <AiOutlineStar data-testid="without-star" size={IconSize} />
       )}
     </RepositoryStarContainer>
   );
